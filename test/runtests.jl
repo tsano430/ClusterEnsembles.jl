@@ -1,18 +1,11 @@
-using LinearAlgebra
-using Metis
-using LightGraphs
 using Test
 using Clustering
+using ClusterEnsembles
 
-base_clusters = 
-label_true = 
+base_clusters = [1 1 1 2 2 3 3; 2 2 2 3 3 1 1; 1 1 2 2 3 3 3; 1 2 missing 1 2 missing missing]
+label_true = [1 1 1 2 2 3 3]
 
-# test mcla
-label_mcla = cluster_ensembles()
-nmi_mcla = mutualinfo(label_true, label_mcla, true)
-@test nmi_mcla == 1.0
+label_pred = cluster_ensembles(Array(base_clusters'), 3)
 
-# test hbgf
-label_hbgf = cluster_ensembles()
-nmi_hbgf = mutualinfo(label_true, label_hbgf, true)
-@test nmi_hbgf == 1.0
+@test mutualinfo(label_true, label_pred, normed=true) == 1.0
+
