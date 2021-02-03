@@ -21,11 +21,7 @@ module ClusterEnsembles
                     h[i, bc2id[bc_elem]] = 1.0
                 end
             end
-            if H == nothing
-                H = h
-            else
-                H = [H h]
-            end
+            H = H === nothing ? h : [H h]
         end
 
         return H
@@ -41,9 +37,9 @@ module ClusterEnsembles
         return membership[colA+1:end]
     end
 
-    function cluster_ensembles(base_clusters::Array{Union{Int, Missing}}, nclass::Int=nothing) 
-        if nclass == nothing
-            nclass = filter(x -> !ismissing(x), unique(base_clusters))
+    function cluster_ensembles(base_clusters::Array{Union{Int, Missing}}; nclass::Union{Int, Nothing}=nothing) 
+        if nclass === nothing
+            nclass = length(filter(x -> !ismissing(x), unique(base_clusters)))
         end
 
         eltype(nclass) <: Number || nclass > 0 || throw(ArgumentError("nclass must be positive."))
