@@ -1,8 +1,9 @@
 # ClusterEnsembles.jl
 
-A Julia package for cluster ensembles. Cluster ensembles generate a single consensus cluster using base clusters obtained from multiple clustering algorithms. The consensus cluster stably achieves a high clustering performance.
-
 [![Build Status](https://travis-ci.org/tsano430/ClusterEnsembles.jl.svg?branch=main)](https://travis-ci.org/tsano430/ClusterEnsembles.jl)
+[![Coverage Status](https://coveralls.io/repos/github/tsano430/ClusterEnsembles.jl/badge.svg?branch=main)](https://coveralls.io/github/tsano430/ClusterEnsembles.jl?branch=main)
+
+A Julia package for cluster ensembles. Cluster ensembles generate a single consensus cluster using base clusters obtained from multiple clustering algorithms. The consensus cluster stably achieves a high clustering performance.
 
 Installation
 ------------
