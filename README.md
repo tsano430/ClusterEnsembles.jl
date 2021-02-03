@@ -18,17 +18,33 @@ Usage
 ```julia
 julia> using ClusterEnsembles
 
-julia> base_clusters = [
-		1 2 1 1;
-		1 2 1 2; 
-		1 2 2 missing; 
-		2 3 2 1; 
-		2 3 3 2; 
-		3 1 3 missing; 
-		3 1 3 missing]
+julia> base_cluster1 = [1 1 1 2 2 3 3];
 
-julia> cluster_ensembles(base_clusters, 3)
+julia> base_cluster2 = [2 2 2 3 3 1 1];
 
+julia> base_cluster3 = [1 1 2 2 3 3 3];
+
+julia> base_cluster4 = [1 2 missing 1 2 missing missing];
+
+julia> base_clusters = [base_cluster1' base_cluster2' base_cluster3' base_cluster4']
+7×4 Array{Union{Missing, Int64},2}:
+ 1  2  1  1
+ 1  2  1  2
+ 1  2  2   missing
+ 2  3  2  1
+ 2  3  3  2
+ 3  1  3   missing
+ 3  1  3   missing
+
+julia> cluster_ensembles(base_clusters, nclass=3)
+7-element Array{Int32,1}:
+ 1
+ 1
+ 1
+ 3
+ 3
+ 2
+ 2
 ```
 
 Reference
