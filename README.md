@@ -1,6 +1,8 @@
 # ClusterEnsembles
 
-Cluster ensembles generate a single consensus cluster using base clusters obtained from multiple clustering algorithms. The consensus cluster stably achieves a high clustering performance. 
+A Julia package for cluster ensembles. 
+
+[![Build Status](https://travis-ci.org/tsano430/ClusterEnsembles.jl.svg?branch=main)](https://travis-ci.org/tsano430/ClusterEnsembles.jl)
 
 Installation
 ------------
@@ -15,16 +17,16 @@ Usage
 ```julia
 julia> using ClusterEnsembles
 
-julia> celabel = cluster_ensembles(base_clusters, 10, 'hbgf')
+julia> base_clusters = [
+		1 2 1 1;
+		1 2 1 2; 
+		1 2 2 missing; 
+		2 3 2 1; 2 3 3 2; 
+		3 1 3 missing; 
+		3 1 3 missing]
+
+julia> celabel = cluster_ensembles(base_clusters, 10)
 ```
-
-- `nclass`: Number of classes in a consensus cluster
-- `solver`: {'mcla', 'hbgf'}
-    
-    `mcla`: Meta-CLustering Algorithm [1]
-    
-    `hbgf`: Hybrid Bipartite Graph Formulation [2]
-
 
 References
 ----------
