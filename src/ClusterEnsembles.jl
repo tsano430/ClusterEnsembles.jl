@@ -6,19 +6,32 @@ module ClusterEnsembles
 
     export cluster_ensembles
 
+    function set_nclass(base_clusters)
+        nclass = -1
+        n_bcs = size(base_clusters)[2]
+
+        for i in 1:n_bcs
+            bc = base_clusters[:, i]
+            unique_bc = filter(x -> !ismissing(x), unique(bc))
+            len_unique_bc = length(unique_bc)
+            nclass = max(nclass, len_unique_bc)
+        end
+        return nclass
+    end
+
     function create_hepergraph(base_clusters)
         H = nothing
-        bc_len, ncluster = size(base_clusters)
+        len_bcs, n_bcs = size(base_clusters)
 
-        for i in 1:ncluster
-            base_cluster = base_clusters[:, i]
-            bc_types = filter(x -> !ismissing(x), unique(base_cluster))
-            bc_types_len = length(bc_types)
-            bc2id = Dict(zip(bc_types, 1:bc_types_len))
-            h = zeros(bc_len, bc_types_len)
-            for (i, bc_elem) in enumerate(base_cluster)
-                if ismissing(bc_elem) == false
-                    h[i, bc2id[bc_elem]] = 1.0
+        for i in 1:n_bcs
+            bc = base_clusters[:, i]
+            unique_bc = filter(x -> !ismissing(x), unique(bc))
+            len_unique_bc = length(unique_bc)
+            bc2id = Dict(zip(unique_bc, 1:len_unique_bc))
+            h = zeros(len_bcs, len_unique_bc)
+            for (i, elem_bc) in enumerate(bc)
+                if ismissing(elem_bc) == false
+                    h[i, bc2id[elem_bc]] = 1.0
                 end
             end
             H = H === nothing ? h : [H h]
@@ -33,18 +46,33 @@ module ClusterEnsembles
         rowA, colA = size(A)
 
         W = [zeros(colA, colA) A'; A zeros(rowA, rowA)]
-        membership = Metis.partition(Graph(W), nclass, alg = :RECURSIVE)
+        membership = Metis.partition(Graph(W), nclass, alg=:RECURSIVE)
         return membership[colA+1:end]
     end
 
-    function cluster_ensembles(base_clusters::Array{Union{Int, Missing}}; nclass::Union{Int, Nothing}=nothing) 
+    """
+    `cluster_ensembles` generate a single consensus cluster using base clusters obtained 
+    from multiple clustering algorithms.
+    
+    # Arguments
+    - `base_clusters`: The given label set of base clusters. Each column is a base cluster's label.
+    - `nclass`: Number of classes in consensus clustering label.
+    - `alg`: Algorithms for cluster ensembles.
+    """
+    function cluster_ensembles(base_clusters::Array{Union{Int, Missing}}; nclass::Union{Int, Nothing}=nothing, alg::Symbol=:hbgf)
         if nclass === nothing
-            nclass = length(filter(x -> !ismissing(x), unique(base_clusters)))
+            nclass = set_nclass(base_clusters)
         end
 
         eltype(nclass) <: Number || nclass > 0 || throw(ArgumentError("nclass must be positive."))
 
-        return hbgf(base_clusters, nclass)
+        if alg == :hbgf
+            consensus_clustering_label = hbgf(base_clusters, nclass)
+        else
+            throw(ArgumentError("Invalid algorithm."))
+        end
+
+        return consensus_clustering_label
     end
 
 end
