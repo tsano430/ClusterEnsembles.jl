@@ -16,6 +16,8 @@ Installation
 Usage
 -----
 
+Simple example of cluster ensembles in the reference [1]
+
 ```julia
 julia> using ClusterEnsembles
 
@@ -48,10 +50,14 @@ julia> cluster_ensembles(base_clusters, nclass=3)
  2
 ```
 
-Reference
----------
+References
+----------
 
-[1] X. Z. Fern and C. E. Brodley, 
+[1] A. Strehl and J. Ghosh, 
+"Cluster ensembles -- a knowledge reuse framework for combining multiple partitions,"
+Journal of Machine Learning Research, vol. 3, pp. 583-617, 2002.
+
+[2] X. Z. Fern and C. E. Brodley, 
 "Solving cluster ensemble problems by bipartite graph partitioning,"
 In Proceedings of the Twenty-First International Conference on Machine Learning, p. 36, 2004.
 
