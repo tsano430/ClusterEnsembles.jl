@@ -1,7 +1,7 @@
 name = "ClusterEnsembles"
 uuid = "e493a4bf-88d6-40ad-84dc-847a9b000e38"
 license = "MIT"
-authors = ["Takehiro Sano <sano@momo.cs.okayama-u.ac.jp>"]
+authors = ["Takehiro Sano <tsano430@gmail.com>"]
 version = "0.1.0"
 
 [deps]
