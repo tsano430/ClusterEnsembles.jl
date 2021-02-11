@@ -11,7 +11,7 @@ module ClusterEnsembles
         n_bcs = size(base_clusters)[2]
 
         for i in 1:n_bcs
-            bc = base_clusters[:, i]
+            bc = view(base_clusters, :, i)
             unique_bc = filter(x -> !ismissing(x), unique(bc))
             len_unique_bc = length(unique_bc)
             nclass = max(nclass, len_unique_bc)
@@ -24,7 +24,7 @@ module ClusterEnsembles
         len_bcs, n_bcs = size(base_clusters)
 
         for i in 1:n_bcs
-            bc = base_clusters[:, i]
+            bc = view(base_clusters, :, i)
             unique_bc = filter(x -> !ismissing(x), unique(bc))
             len_unique_bc = length(unique_bc)
             bc2id = Dict(zip(unique_bc, 1:len_unique_bc))
