@@ -3,6 +3,7 @@ module ClusterEnsembles
     using LinearAlgebra
     using Metis
     using LightGraphs
+    using Distances
 
     export cluster_ensembles
 
@@ -19,7 +20,7 @@ module ClusterEnsembles
         return nclass
     end
 
-    function create_hepergraph(base_clusters)
+    function create_hypergraph(base_clusters)
         H = nothing
         len_bcs, n_bcs = size(base_clusters)
 
@@ -40,14 +41,54 @@ module ClusterEnsembles
         return H
     end
 
+    # Meta-CLustering Algorithm
+    function mcla(base_clusters, nclass)
+        # Construct Meta-graph
+        len_bcs, n_bcs = size(base_clusters)
+        H = create_hypergraph(base_clusters)
+
+        pair_dist_jac = pairwise(Jaccard(), H, H, dims=2)
+        S = ones(size(pair_dist_jac)) - pair_dist_jac
+
+        # Cluster Hyperedges
+        membership = Metis.partition(Graph(S), nclass, alg=:RECURSIVE)
+
+        # Collapse Meta-clusters
+        meta_clusters = zeros(len_bcs, nclass)
+        for (i, v) in enumerate(membership)
+            for j in 1:len_bcs
+                meta_clusters[j, v] += H[j, i]
+            end
+        end
+
+        # Compete for Objects
+        celabel = zeros(Int32, len_bcs)
+        for i in 1:len_bcs
+            v = view(meta_clusters, i, :)
+            candidate = []
+            max_v = maximum(v)
+            for (idx_v, elem_v) in enumerate(v)
+                if elem_v == max_v
+                    push!(candidate, idx_v)
+                end
+            end
+            celabel[i] = rand(candidate)
+        end
+
+        celabel = convert.(Int, celabel)
+        return celabel
+    end
+
     # Hybrid Bipartite Graph Formulation
     function hbgf(base_clusters, nclass)
-        A = create_hepergraph(base_clusters)
+        A = create_hypergraph(base_clusters)
         rowA, colA = size(A)
 
         W = [zeros(colA, colA) A'; A zeros(rowA, rowA)]
         membership = Metis.partition(Graph(W), nclass, alg=:RECURSIVE)
-        return membership[colA+1:end]
+        celabel = convert.(Int, membership[colA+1:end])
+
+        return celabel
     end
 
     """
@@ -68,6 +109,8 @@ module ClusterEnsembles
 
         if alg == :hbgf
             consensus_clustering_label = hbgf(base_clusters, nclass)
+        elseif alg == :mcla
+            consensus_clustering_label = mcla(base_clusters, nclass)
         else
             throw(ArgumentError("Invalid algorithm."))
         end

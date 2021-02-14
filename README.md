@@ -43,8 +43,8 @@ julia> base_clusters = [base_cluster1' base_cluster2' base_cluster3' base_cluste
  3  1  3   missing
  3  1  3   missing
 
-julia> cluster_ensembles(base_clusters, nclass=3)
-7-element Array{Int32,1}:
+julia> cluster_ensembles(base_clusters, nclass=3, alg=:hbgf)
+7-element Array{Int64,1}:
  1
  1
  1
@@ -53,6 +53,13 @@ julia> cluster_ensembles(base_clusters, nclass=3)
  2
  2
 ```
+
+- `nclass`: Number of classes in a consensus cluster
+- `alg`: {`:mcla`, `:hbgf`}
+    
+    `:mcla`: Meta-CLustering Algorithm [1]
+    
+    `:hbgf`: Hybrid Bipartite Graph Formulation [2]
 
 References
 ----------
