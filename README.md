@@ -72,3 +72,6 @@ Journal of Machine Learning Research, vol. 3, pp. 583-617, 2002.
 "Solving cluster ensemble problems by bipartite graph partitioning,"
 In Proceedings of the Twenty-First International Conference on Machine Learning, p. 36, 2004.
 
+[3] J. Ghosh and A. Acharya, 
+"Cluster ensembles," 
+Wiley Interdisciplinary Reviews: Data Mining and Knowledge Discovery, vol. 1, no. 4, pp. 305-315, 2011. 
