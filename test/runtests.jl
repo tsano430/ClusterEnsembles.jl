@@ -24,3 +24,7 @@ label_pred = cluster_ensembles(base_clusters, nclass=3, alg=:hbgf)
 # test mcla
 label_pred = cluster_ensembles(base_clusters, nclass=3, alg=:mcla)
 @test mutualinfo(label_true, label_pred, normed=true) == 1.0
+
+# test nmf
+label_pred = cluster_ensembles(base_clusters, nclass=3, alg=:nmf)
+@test mutualinfo(label_true, label_pred, normed=true) == 1.0

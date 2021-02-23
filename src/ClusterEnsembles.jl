@@ -91,6 +91,71 @@ module ClusterEnsembles
         return celabel
     end
 
+    function create_connectivity_matrix(base_clusters)
+        len_bcs, n_bcs = size(base_clusters)
+        M = zeros(len_bcs, len_bcs)
+        m = zeros(len_bcs, len_bcs)
+
+        for i in 1:n_bcs
+            bc = view(base_clusters, :, i)
+            for j in 1:len_bcs
+                if ismissing(bc[j])
+                    continue
+                end
+                for k in 1:len_bcs
+                    if ismissing(bc[k])
+                        continue
+                    end
+                    if bc[j] == bc[k]
+                        m[j, k] = 1
+                    end
+                end
+            end
+            M += m
+            fill!(m, 0)
+        end
+        M ./= n_bcs
+
+        return M
+    end
+
+    function orthogonal_nmf_algorithm(W::Matrix{T}, nclass; maxiter=200) where T
+        n = size(W)[1]
+        Q = rand(n, nclass)
+        S = diagm(rand(nclass))
+        QS = Matrix{T}(undef, n, nclass)
+        WQS = Matrix{T}(undef, n, nclass)
+        QTQ = Matrix{T}(undef, nclass, nclass)
+
+        for _ in 1:maxiter
+            # Update Q
+            mul!(QS, Q, S)
+            mul!(WQS, W, QS)
+            Q .*= sqrt.( WQS ./ (Q * Q' * WQS .+ 1e-8) )
+            # Update S
+            mul!(QTQ, Q', Q)
+            S .*= sqrt.( (Q' * W * Q) ./ (QTQ * S * QTQ .+ 1e-8) )
+        end
+
+        return Q, S
+    end
+
+    # NMF-based consensus clustering
+    function nmf(base_clusters, nclass)
+        len_bcs, n_bcs = size(base_clusters)
+
+        M = create_connectivity_matrix(base_clusters)
+        Q, S = orthogonal_nmf_algorithm(M, nclass)
+        tmp = Q * sqrt.(S)
+
+        celabel = Array{Int}(undef, len_bcs)
+        for i in 1:len_bcs
+            celabel[i] = argmax(view(tmp, i, :))
+        end
+
+        return celabel
+    end
+
     """
     `cluster_ensembles` generate a single consensus cluster using base clusters obtained 
     from multiple clustering algorithms.
@@ -111,6 +176,8 @@ module ClusterEnsembles
             consensus_clustering_label = hbgf(base_clusters, nclass)
         elseif alg == :mcla
             consensus_clustering_label = mcla(base_clusters, nclass)
+        elseif alg == :nmf
+            consensus_clustering_label = nmf(base_clusters, nclass)
         else
             throw(ArgumentError("Invalid algorithm."))
         end
