@@ -55,7 +55,7 @@ julia> cluster_ensembles(base_clusters, nclass=3, alg=:hbgf)
 ```
 
 - `nclass`: Number of classes in a consensus cluster
-- `alg`: {`:mcla`, `:hbgf`}
+- `alg`: {`:mcla`, `:hbgf`, `:nmf`}
     
     ~~`:mcla`: Meta-CLustering Algorithm [1]~~
     
