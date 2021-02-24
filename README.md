@@ -62,6 +62,9 @@ julia> cluster_ensembles(base_clusters, nclass=3, alg=:hbgf)
     `:hbgf`: Hybrid Bipartite Graph Formulation [2]
 
     `:nmf`: NMF-based consensus clustering [4]
+    
+    **Note:** Please use `:hbgf` for large-scale `base_clusters`.
+
 
 References
 ----------
