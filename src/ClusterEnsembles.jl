@@ -119,7 +119,7 @@ module ClusterEnsembles
         return M
     end
 
-    function orthogonal_nmf_algorithm(W::Matrix{T}, nclass; maxiter=200) where T
+    function orthogonal_nmf_algorithm(W::Matrix{T}, nclass, maxiter) where T
         n = size(W)[1]
         Q = rand(n, nclass)
         S = diagm(rand(nclass))
@@ -141,11 +141,11 @@ module ClusterEnsembles
     end
 
     # NMF-based consensus clustering
-    function nmf(base_clusters, nclass)
+    function nmf(base_clusters, nclass; maxiter=200)
         len_bcs, n_bcs = size(base_clusters)
 
         M = create_connectivity_matrix(base_clusters)
-        Q, S = orthogonal_nmf_algorithm(M, nclass)
+        Q, S = orthogonal_nmf_algorithm(M, nclass, maxiter)
         tmp = Q * sqrt.(S)
 
         celabel = Array{Int}(undef, len_bcs)
