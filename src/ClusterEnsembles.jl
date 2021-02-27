@@ -49,6 +49,7 @@ module ClusterEnsembles
 
         pair_dist_jac = pairwise(Jaccard(), H, H, dims=2)
         S = ones(size(pair_dist_jac)) - pair_dist_jac
+        S .*= 1e3
 
         # Cluster Hyperedges
         membership = Metis.partition(Graph(S), nclass, alg=:RECURSIVE)
