@@ -178,7 +178,9 @@ module ClusterEnsembles
     - `nclass`: Number of classes in consensus clustering label.
     - `alg`: Algorithms for cluster ensembles.
     """
-    function cluster_ensembles(base_clusters::Array{Union{Int, Missing}}; nclass::Union{Int, Nothing}=nothing, alg::Symbol=:hbgf)
+    function cluster_ensembles(base_clusters::Union{Array{Int}, Array{Union{Int, Missing}}}; 
+                               nclass::Union{Int, Nothing}=nothing, 
+                               alg::Symbol=:hbgf)
         if nclass === nothing
             nclass = set_nclass(base_clusters)
         end

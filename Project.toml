@@ -5,7 +5,9 @@ authors = ["Takehiro Sano <tsano430@gmail.com>"]
 version = "0.1.4"
 
 [deps]
+CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
 Clustering = "aaaa29a8-35af-508c-8bc3-b662a17a0fe5"
+DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
 Distances = "b4f34e82-e78d-54a5-968a-f98e89d6e8f7"
 LightGraphs = "093fc24a-ae57-5d10-9952-331d41423f4d"
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
@@ -14,7 +16,9 @@ Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
 SimpleWeightedGraphs = "47aef6b3-ad0c-573a-a1e2-d07658019622"
 
 [compat]
+CSV = "0.8.2, 0.8.3, 0.8.4"
 Clustering = "0.12.4, 0.13.5, 0.14.2"
+DataFrames = "0.22.3, 0.22.4, 0.22.5"
 Distances = "0.8.2, 0.9.2, 0.10.2"
 LightGraphs = "1.3.3, 1.3.4, 1.3.5"
 Metis = "0.1.0, 1.0.0"
