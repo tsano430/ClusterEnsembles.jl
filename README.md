@@ -60,7 +60,7 @@ julia> cluster_ensembles(base_clusters, nclass=3, alg=:hbgf)
 
     `:cspa`: Cluster-based Similarity Partitioning Algorithm [1]
     
-    ~~`:mcla`: Meta-CLustering Algorithm [1]~~
+    `:mcla`: Meta-CLustering Algorithm [1]
     
     `:hbgf`: Hybrid Bipartite Graph Formulation [2]
 

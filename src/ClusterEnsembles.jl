@@ -61,10 +61,11 @@ module ClusterEnsembles
 
         pair_dist_jac = pairwise(Jaccard(), H, H, dims=2)
         S = ones(size(pair_dist_jac)) - pair_dist_jac
-        S .*= 1e3
+        S = convert.(Int, round.(S .* 1e3))
 
         # Cluster Hyperedges
-        membership = Metis.partition(Graph(S), nclass, alg=:RECURSIVE)
+        #membership = Metis.partition(Graph(S), nclass, alg=:RECURSIVE)
+        membership = partition(SimpleWeightedGraph(S), nclass, alg=:RECURSIVE)
 
         # Collapse Meta-clusters
         meta_clusters = zeros(len_bcs, nclass)
