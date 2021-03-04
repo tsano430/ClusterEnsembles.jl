@@ -3,9 +3,12 @@ module ClusterEnsembles
     using LinearAlgebra
     using Metis
     using LightGraphs
+    using SimpleWeightedGraphs
     using Distances
 
     export cluster_ensembles
+
+    include("metis_patch.jl")
 
     function set_nclass(base_clusters)
         nclass = -1
@@ -39,6 +42,15 @@ module ClusterEnsembles
         end
 
         return H
+    end
+
+    # Cluster-based Similarity Partitioning Algorithm
+    function cspa(base_clusters, nclass)
+        H = create_hypergraph(base_clusters)
+        S = H * H'
+        #celabel = Metis.partition(Graph(S), nclass, alg=:RECURSIVE)
+        celabel = partition(SimpleWeightedGraph(S), nclass, alg=:RECURSIVE)
+        return celabel
     end
 
     # Meta-CLustering Algorithm
@@ -179,6 +191,8 @@ module ClusterEnsembles
             consensus_clustering_label = mcla(base_clusters, nclass)
         elseif alg == :nmf
             consensus_clustering_label = nmf(base_clusters, nclass)
+        elseif alg == :cspa
+            consensus_clustering_label = cspa(base_clusters, nclass)
         else
             throw(ArgumentError("Invalid algorithm."))
         end

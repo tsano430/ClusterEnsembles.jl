@@ -55,7 +55,10 @@ julia> cluster_ensembles(base_clusters, nclass=3, alg=:hbgf)
 ```
 
 - `nclass`: Number of classes in a consensus cluster
-- `alg`: {`:mcla`, `:hbgf`, `:nmf`}
+
+- `alg`: {`:cspa`, `:mcla`, `:hbgf`, `:nmf`}
+
+    `:cspa`: Cluster-based Similarity Partitioning Algorithm [1]
     
     ~~`:mcla`: Meta-CLustering Algorithm [1]~~
     
