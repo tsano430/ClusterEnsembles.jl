@@ -31,9 +31,9 @@ tmp = cluster_ensembles(base_clusters)
 println("OK")
 
 # Test alg
-for alg in [:hbgf, :nmf, :cspa, :mcla]
+for alg in [:hbgf, :nmf, :cspa, :mcla, :all]
     print("* ", alg, " -- ")
-    label_pred = cluster_ensembles(base_clusters, nclass=3, alg=alg)
+    label_pred = cluster_ensembles(base_clusters, alg=alg)
     @test mutualinfo(label_true, label_pred, normed=true) == 1.0
     label_pred2 = cluster_ensembles(base_clusters2, alg=alg)
     @test mutualinfo(label_true2, label_pred2, normed=true) == 1.0

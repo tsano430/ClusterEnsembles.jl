@@ -56,7 +56,7 @@ julia> cluster_ensembles(base_clusters, nclass=3, alg=:hbgf)
 
 - `nclass`: Number of classes in a consensus cluster
 
-- `alg`: {`:cspa`, `:mcla`, `:hbgf`, `:nmf`}
+- `alg`: {`:cspa`, `:mcla`, `:hbgf`, `:nmf`, `:all`}
 
     `:cspa`: Cluster-based Similarity Partitioning Algorithm [1]
     
@@ -65,6 +65,8 @@ julia> cluster_ensembles(base_clusters, nclass=3, alg=:hbgf)
     `:hbgf`: Hybrid Bipartite Graph Formulation [2]
 
     `:nmf`: NMF-based consensus clustering [4]
+
+    `:all`: Use all solvers, and then return the consensus clustering label with the smallest objective function value.
     
     **Note:** Please use `:hbgf` for large-scale `base_clusters`.
 
