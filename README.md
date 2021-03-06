@@ -66,7 +66,11 @@ julia> cluster_ensembles(base_clusters, nclass=3, alg=:hbgf)
 
     `:nmf`: NMF-based consensus clustering [4]
 
-    `:all`: Use all solvers, and then return the consensus clustering label with the smallest objective function value [1].
+    `:all`: Use all solvers, and then return the consensus clustering label with the largest objective function value [1].
+    
+    <p align="center">
+      <img width="600" src="https://user-images.githubusercontent.com/60049342/110207481-14f31a00-7ec7-11eb-96cf-4e03a6ad8990.png">
+    </p>
     
     **Note:** Please use `:hbgf` for large-scale `base_clusters`.
 
