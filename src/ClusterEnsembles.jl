@@ -227,7 +227,7 @@ module ClusterEnsembles
                     best_objv = objv
                     consensus_clustering_label = label
                 end
-                if best_objv > objv
+                if best_objv < objv
                     best_objv = objv
                     consensus_clustering_label = label
                 end
