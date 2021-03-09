@@ -54,17 +54,19 @@ julia> cluster_ensembles(base_clusters, nclass=3, alg=:hbgf)
  2
 ```
 
-- `nclass`: Number of classes in a consensus cluster
+- `nclass`: Number of classes in a consensus cluster.
+
+- `random_state`: Used for 'mcla' and 'nmf'. Pass a nonnegative integer for reproducible results.
 
 - `alg`: {`:cspa`, `:mcla`, `:hbgf`, `:nmf`, `:all`}
 
-    `:cspa`: Cluster-based Similarity Partitioning Algorithm [1]
+    `:cspa`: Cluster-based Similarity Partitioning Algorithm [1].
     
-    `:mcla`: Meta-CLustering Algorithm [1]
+    `:mcla`: Meta-CLustering Algorithm [1].
     
-    `:hbgf`: Hybrid Bipartite Graph Formulation [2]
+    `:hbgf`: Hybrid Bipartite Graph Formulation [2].
 
-    `:nmf`: NMF-based consensus clustering [4]
+    `:nmf`: NMF-based consensus clustering [4].
 
     `:all`: Use all solvers, and then return the consensus clustering label with the largest objective function value [1].
     

@@ -6,6 +6,7 @@ module ClusterEnsembles
     using SimpleWeightedGraphs
     using Distances
     using Clustering
+    using Random
 
     export cluster_ensembles
 
@@ -191,16 +192,23 @@ module ClusterEnsembles
     # Arguments
     - `base_clusters`: The given label set of base clusters. Each column is a base cluster's label.
     - `nclass`: Number of classes in consensus clustering label.
+    - `random_state`: Used for reproducible results.
     - `alg`: Algorithms for cluster ensembles.
     """
     function cluster_ensembles(base_clusters::Union{Array{Int}, Array{Union{Int, Missing}}}; 
-                               nclass::Union{Int, Nothing}=nothing, 
+                               nclass::Union{Int, Nothing}=nothing,
+                               random_state::Union{Int, Nothing}=nothing, 
                                alg::Symbol=:hbgf)
         if nclass === nothing
             nclass = set_nclass(base_clusters)
         end
 
         eltype(nclass) <: Number || nclass > 0 || throw(ArgumentError("nclass must be positive."))
+
+        if random_state !== nothing
+            eltype(random_state) <: Number || random_state >= 0 || throw(ArgumentError("random_state must be nonnegative."))
+            Random.seed!(random_state)
+        end
 
         if alg == :hbgf
             consensus_clustering_label = hbgf(base_clusters, nclass)
