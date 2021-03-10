@@ -14,7 +14,7 @@ Installation
 ------------
 
 ```
-]add ClusterEnsembles
+Pkg.add("ClusterEnsembles")
 ```
 
 Usage
